@@ -81,20 +81,44 @@ mpushd() { # call pushd with a module name.
 
 
 lsproj() { #
-    local here dir parent targets task tasks
-    for dir in `find ${@:-.} -name .git -prune -o -type f -name build.gradle`; do
-        # echo debug dir=$dir dirname dir=`dirname $dir`
-        here="`dirname $dir | sed -e 's/build.gradle//' -e 's/^\.\///' -e 's/\//:/g'`"
-        # echo "here: $here"
+    local here dir parent project_file targets task tasks type
+    for project_file in $(find ${@:-.} -name .git -prune \
+        -o -type f -name build.gradle \
+        -o -type f -name Makefile \
+        -o -type f -name Makefile.am \
+        )
+    do
+        dir="$(dirname "$project_file")"
+        type="$(basename "$project_file")"
+        # echo "debug dir=$dir project_file=$project_file type=$type"
+
         # skip .
         [ "$here" = '.' ] && continue
+        
+        case "$type" in
+            build.gradle)
+                # gradle uses a :module:name notaton. Modules come from settings.gradle.
 
-        parent="$(pwd | sed -e 's:'"$(gettop)"'::' -e 's/\//:/g')"
-        # echo "parent: $parent"
+                # our module name.
+                here="`echo $dir | sed -e 's/^\.\///' -e 's/\//:/g'`"
+                # echo "here=$here"
 
-        # skip if not in settings.gradle file.
-        grep include "$(gettop)/settings.gradle" | grep -q "$parent:$here" || continue
-        echo "$parent:$here"
+                # figure out what the parents of this project is.
+                parent="$(pwd | sed -e 's:'"$(gettop)"'::' -e 's/\//:/g')"
+                # echo "parent: $parent"
+
+                # skip if not in settings.gradle file.
+                grep include "$(gettop)/settings.gradle" | grep -q "$parent:$here" && echo "$parent:$here"
+                ;;
+            Makefile|Makefile.*)
+                # assume it works this way.
+                echo "$dir" | sed -e 's/^\.\///'
+                ;;
+            *)
+                # not a project.
+                ;;
+        esac
+
     done
 }
 
