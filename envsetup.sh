@@ -17,7 +17,7 @@ hmm() { # This help.
 
 guess_is_top() {
     # These files are always present at top.
-    if ! [ -f "envsetup.cmd" -a -f "envsetup.sh" ]; then return 127; fi
+    if ! [ -f "envsetup.cmd" -a -f "envsetup.sh" ]; then return 0; fi
     if ! [ -f "COPYING" -a -f "README" ]; then return 127; fi
 
     # are we a gradle top?
