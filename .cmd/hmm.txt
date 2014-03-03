@@ -1,0 +1,6 @@
+hmm        this help.
+croot      cd to top of the tree.
+cpushd     call pushd with the top of the tree.
+m          makes from the top of the tree.
+rd         :run a demo by name
+rdemo      alias for rd
