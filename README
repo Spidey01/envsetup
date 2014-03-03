@@ -2,9 +2,14 @@ ENVSETUP
 --------
 
 For one of my projects I decided to make a top level helper script, similar to
-how the Android Open Source Project (AOSP) functions. Eventually I decided this
-should be more general and made this git, so I can easily make new projects
-with it :-).
+how the Android Open Source Project (AOSP) exports functions for develoeprs.
+Eventually I decided this should be more general and made this git, so I can
+easily make new projects with it :-).
+
+This is intended for projects written in C, C++, or Java.
+
+It does not have to be an Android project. It can be anything.
+
 
 YOUR PROJECT
 ============
