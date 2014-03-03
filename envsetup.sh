@@ -300,25 +300,8 @@ _envsetup_complete_projects() { ## bash completion function for project names.
 }
 
 
-_sxe_complete_demos() { ## bash completion function for demo names.
-    local cur prev opts
-    COMPREPLY=()
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="$(ls $(gettop)/demos | sed -e 's/\///')"
-
-    COMPREPLY=($(compgen -W "$opts" -- ${cur}))  
-
-    return 0
-
-}
-
-
 # complete project names for these commands.
 complete -o nospace -F _envsetup_complete_projects m mma m_make m_gradle
-
-# complete demo names for these commands.
-complete -F _sxe_complete_demos rd rdemo idemo irdemo
 
 check_android
 
