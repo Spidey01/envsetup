@@ -320,5 +320,17 @@ complete -F _sxe_complete_demos rd rdemo idemo irdemo
 
 check_android
 
-[ -f "$(gettop)/envsetup.local.sh" ] && . "$(gettop)/envsetup.local.sh"
+if [ -f "$(gettop)/envsetup.local.sh" ]; then
+    . "$(gettop)/envsetup.local.sh"
+else
+    cat << EOF > "$(gettop)/envsetup.local.sh"
+#
+# Place local changes to envsetup.sh here.
+# This includes environment variables, etc.
+#
+
+PROJECT_NAME="$(pwd)"
+
+EOF
+fi
 
