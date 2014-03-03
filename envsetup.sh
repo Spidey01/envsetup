@@ -7,7 +7,7 @@ hmm() { # This help.
     # Supported OS'es include the path here, so >_>.
     # Also this skips funcs with !a-z names (e.g. for internals).
     # It also skips undocumented.
-    cat `gettop`/envsetup.sh | grep '^[a-z]*() {' | \
+    cat `gettop`/envsetup.{sh,local.sh} | grep '^[a-z]*() {' | \
         sed -e 's/() { # /\t/' -e 's/[a-z]*() {.*$//' -e '/^$/d' -e 's/^/\t/' #| sort
 
     echo
@@ -16,20 +16,33 @@ hmm() { # This help.
 
 
 guess_is_top() {
+    # These files are always present at top.
+    if ! [ -f "envsetup.cmd" -a -f "envsetup.sh" ]; then return 127; fi
+    if ! [ -f "COPYING" -a -f "README" ]; then return 127; fi
+
+    # are we a gradle top?
     [ \
         -f "gradlew" \
         -a -f "build.gradle" \
         -a -f "settings.gradle" \
         -a -f "gradle/wrapper/gradle-wrapper.properties" \
-        -a -d "core" \
-        -a -d "android" \
-        -a -d "pc" \
-    ]
+    ] && return 0
+
+    # are we a make top?
+    [ \
+        -f "Makefile" \
+        -a -d "src" -a -d "include" \
+    ] && return 0
 }
 
 
 guess_is_project() {
-    [ -f "build.gradle" ]
+    [ -f "Makefile" -o \
+      -f "build.gradle" -o \
+      -f "build.xml" -o \
+      -f "CMakeLists" -o \
+      -f "premake.lua" \
+    ]
 }
 
 
@@ -84,14 +97,36 @@ lsproj() { #
 }
 
 
-m() { # Makes from the top of the tree.
-    cpushd > /dev/null
-    [ -f "$(gettop)/tmp/.m-clears-screen" ] && clear
-
+_maybe_use_script() { ## run it's args and log to tmp/build.log
     if [ -f "$(gettop)/tmp/.m-uses-script" ] && type script >/dev/null; then
-        script -c "\"$(gettop)/gradlew\" --daemon \"${@:-build}\"" "$(gettop)/tmp/gradlew.log"
+        script -c "$*" "$(gettop)/tmp/build.log"
     else
-        "$(gettop)/gradlew" --daemon "${@:-build}"
+        eval $*
+    fi
+}
+
+
+m_gradle() { # runs gradle based build in cwd.
+    _maybe_use_script "$(gettop)/gradlew" --daemon "${@:-build}"
+}
+
+
+m_make() { # runs make based build in cwd.
+    _maybe_use_script make $*
+}
+
+
+m() { # Makes from the top of the tree. Selects m_tool correctly.
+    cpushd > /dev/null
+    if guess_is_project; then
+        [ -f "$(gettop)/tmp/.m-clears-screen" ] && clear
+        if [ -f Makefile ]; then
+            m_make $*
+        elif [ -f build.gradle ]; then
+            m_gradle $*
+        else
+            echo "Don't know how to build this kind of project."
+        fi
     fi
     popd
 }
