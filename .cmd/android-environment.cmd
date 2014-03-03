@@ -17,6 +17,6 @@ IF NOT DEFINED ANDROID_HOME (
 	)
 )
 
-IF EXIST "%SXE_ROOT%\.cmd\android-environment.local.cmd" CALL "%SXE_ROOT%\.cmd\android-environment.local.cmd"
+IF EXIST "%PROJECT_ROOT%\.cmd\android-environment.local.cmd" CALL "%PROJECT_ROOT%\.cmd\android-environment.local.cmd"
 
 GOTO :eof

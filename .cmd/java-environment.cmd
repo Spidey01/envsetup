@@ -6,6 +6,6 @@ IF NOT DEFINED JAVA_HOME (
 	)
 )
 
-IF EXIST "%SXE_ROOT%\.cmd\java-environment.local.cmd" CALL "%SXE_ROOT%\.cmd\java-environment.local.cmd"
+IF EXIST "%PROJECT_ROOT%\.cmd\java-environment.local.cmd" CALL "%PROJECT_ROOT%\.cmd\java-environment.local.cmd"
 
 GOTO :eof

@@ -1,7 +1,7 @@
 @ECHO OFF
-IF NOT DEFINED SXE_ROOT (
-	ECHO "SXE_ROOT not defined, please setup your environment"
+IF NOT DEFINED PROJECT_ROOT (
+	ECHO "PROJECT_ROOT not defined, please setup your environment"
 	GOTO :eof
 )
 
-CD "%SXE_ROOT%"
+CD "%PROJECT_ROOT%"
