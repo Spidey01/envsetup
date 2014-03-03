@@ -331,7 +331,7 @@ else
 # This includes environment variables, etc.
 #
 
-PROJECT_NAME="$(pwd)"
+PROJECT_NAME="$(basename $(pwd))"
 
 EOF
 fi
