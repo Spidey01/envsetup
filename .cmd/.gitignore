@@ -1,2 +1,1 @@
-android-environment.local.cmd
-java-environment.local.cmd
+*.local.*
