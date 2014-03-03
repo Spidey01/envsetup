@@ -1,5 +1,7 @@
 @ECHO OFF
 
+SET "ENVSETUP_VERSION=1.1"
+
 SET SXE_ROOT=%~dp0
 
 CALL "%SXE_ROOT%\.cmd\java-environment.cmd"

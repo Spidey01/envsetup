@@ -1,4 +1,6 @@
 
+ENVSETUP_VERSION="1.1"
+
 # in honor of Android.
 hmm() { # This help.
     echo 'usage: ". ./envsetup.sh" from your shell to add the following functions to your environment'
