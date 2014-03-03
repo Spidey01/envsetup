@@ -213,11 +213,20 @@ mangrep() { #  runs grep on all local AndroidManifest.xml files.
 }
 
 
-choosejdk() {
-    local option
+choosejdk() { # Export a JAVA_HOME.
+    local option jdk where
+
+    JDK_LIST=""
+
+    for where in /usr/lib/jvm /usr/local/lib/jvm; do
+        [ -d "$where" ] || continue
+        for jdk in $(ls "$where"); do
+            JDK_LIST="$JDK_LIST ${where}/${jdk}"
+        done
+    done
 
     echo "Select a JDK:"
-    select option in `ls /usr/lib/jvm`; do
+    select option in $JDK_LIST; do
         export JAVA_HOME="$option"
         break
     done
