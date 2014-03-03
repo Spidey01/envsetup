@@ -1,0 +1,30 @@
+ENVSETUP
+--------
+
+For one of my projects I decided to make a top level helper script, similar to
+how the Android Open Source Project (AOSP) functions. Eventually I decided this
+should be more general and made this git, so I can easily make new projects
+with it :-).
+
+YOUR PROJECT
+============
+
+Copy over the following to your project root:
+
+	envsetup.sh
+	envsetup.cmd
+
+Create the following files or edit the script accordingly:
+
+	COPYING
+	README
+
+And your build system, etc. Several are kinda supported. Patches welcome.
+
+To get stuff going, source the .sh in bash or run the .cmd in cmd.exe.
+
+	$ . ./envsetup.sh
+
+	E:\proj> envsetup.cmd
+
+Edit the created envsetup.local.{sh,cmd} files with project local stuff.
