@@ -26,6 +26,12 @@
 
 ENVSETUP_VERSION="1.1"
 
+# database like list of project files, see 'filelist'.
+# path is relative to projet root.
+#
+ENVSETUP_FILELIST=tmp/filelist
+
+
 # in honor of Android.
 hmm() { # This help.
     echo 'usage: ". ./envsetup.sh" from your shell to add the following functions to your environment'
@@ -219,16 +225,20 @@ m() { # Makes from the top of the tree. Selects m_tool correctly.
 # }
 
 
-mma() { # Builds all of the modules in the current directory, and their dependencies.
+mma() { # Run m for all of the modules in the current directory.
     local task project targets
 
     for project in `lsproj`; do
-        for task in ${@:-build}; do
-            targets="$targets $project:$task"
-        done
+        if echo "$project" | grep -q ':'
+        then # gradle project.
+            for task in ${@:-build}; do
+                targets="$targets $project:$task"
+            done
+        elif [ -f "${project}/Makefile" ]; then
+            targets="$targets $project-$1"
+        fi
     done
-    m $targets
-
+    echo m $targets
 }
 
 
@@ -259,6 +269,69 @@ resgrep() { #  runs grep on all local res/*.xml files.
 
 mangrep() { #  runs grep on all local AndroidManifest.xml files.
     find . -name .git -prune -o -type f -name 'AndroidManifest.xml' -print0 | xargs -0 grep --color -n "$@"
+}
+
+
+filelist() { # create index of project files.
+    local project dirs p
+
+    croot
+    echo -n "Creating index..."
+
+
+    dirs=""
+    for project in $(lsproj); do
+        # make sure any gradle projects are converted to paths.
+        # first -e is for the leading :!
+        p="$(echo "./$project" | sed -e 's/://' -e 's/:/\//g')"
+        # echo "p=$p"
+        dirs="$dirs $p"
+    done
+
+    # exclude what looks like a temporary or hidden directory.
+    find $dirs -not \( \
+        -type d -name \.\*  -prune -o \
+        -type d -name tmp   -prune -o \
+        -type d -name out   -prune -o \
+        -type d -name build -prune -o \
+        -type d -name obj   -prune \
+    \) -type f | sort | uniq > "./$ENVSETUP_FILELIST"
+
+
+    echo " Done"
+    cd "$OLDPWD"
+}
+
+
+flgrep() { # grep against the filelist.
+    grep "$@" "$(gettop)/$ENVSETUP_FILELIST"
+}
+
+
+godir() { # Go to the directory containing a file.
+    local T db matches count
+
+    T=$(gettop)
+    db="$T/${ENVSETUP_FILELIST}"
+
+    if [ ! -f "$db" ]; then
+        filelist
+    fi
+
+    matches=($(grep $* "$db"))
+    count=${#matches[@]}
+
+    [ "$count" -eq 0 ] && return # not found
+    [ "$count" -eq 1 ] && {
+        mpushd "$(dirname "${matches[0]}")"
+        return
+    }
+
+    echo "count $count"
+    select which in "${matches[@]}"; do
+        mpushd "$(dirname "$which")"
+        return
+    done
 }
 
 
