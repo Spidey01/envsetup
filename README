@@ -6,7 +6,9 @@ how the Android Open Source Project (AOSP) exports functions for develoeprs.
 Eventually I decided this should be more general and made this git, so I can
 easily make new projects with it :-).
 
-This is intended for projects written in C, C++, or Java.
+This is intended for projects written in C, C++, or Java. It is meant to be run
+form the command line on a Unix or Windows NT based system. Bash and cmd.exe
+are supported as shells.
 
 It does not have to be an Android project. It can be anything.
 
@@ -16,6 +18,7 @@ YOUR PROJECT
 
 Copy over the following to your project root:
 
+	.cmd
 	envsetup.sh
 	envsetup.cmd
 
@@ -26,10 +29,22 @@ Create the following files or edit the script accordingly:
 
 And your build system, etc. Several are kinda supported. Patches welcome.
 
-To get stuff going, source the .sh in bash or run the .cmd in cmd.exe.
+You may wish to include the contents of my .gitignore in this repo.
+
+
+To get stuff going in your development shell: source the .sh in bash or run the
+.cmd in cmd.exe.
 
 	$ . ./envsetup.sh
 
 	E:\proj> envsetup.cmd
 
 Edit the created envsetup.local.{sh,cmd} files with project local stuff.
+
+On Windows you may place local batch files and stuff in .\.cmd and prefix the
+extnesion with .local. E.g. foo.local.cmd. This directory gets added to your
+%Path%.
+
+On UNIX based systems, well you know how to write shell functions don't you?
+There is also the ./.cmd directory if you wish to add that to your $PATH via
+envsetup.local.sh.
