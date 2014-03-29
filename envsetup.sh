@@ -24,7 +24,7 @@
 #
 # For more information, please refer to <http://unlicense.org>
 
-ENVSETUP_VERSION="1.1"
+ENVSETUP_VERSION="1.2"
 
 # database like list of project files, see 'filelist'.
 # path is relative to projet root.
@@ -246,16 +246,39 @@ mma() { # Run m for all of the modules in the current directory.
 # }
 
 
+search() { # search [-name find_pattern]... [grep args].
+    local fargs gargs
+
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            -name)
+                if [ -z "$fargs" ]; then
+                    fargs="$1 $2"
+                else
+                    fargs="$fargs -o $1 $2"
+                fi
+                shift 2
+                ;;
+            *)
+                gargs="$gargs $1"
+                shift
+            ;;
+        esac
+    done
+    eval "find . -name .git -prune -o -type f \( ${fargs} \) -print0" \
+        | eval "xargs -0 grep --color -n $gargs"
+}
+
+
 jgrep() { # runs grep on all local Java source files.
-    find . -name .git -prune -o -type f -name "*\.java" -print0 | xargs -0 grep --color -n "$@"
+    search -name "*\.java" "$@"
 }
 
 
 cgrep() { # runs grep on all local C/C++ source files.
-    find . -name .git -prune -o -type f \
-        \( -name '*\.c' -o -name '*\.cpp' -o -name '*\.cxx' -o -name '*\.cc' -o \
-           -name '*\.h' -o -name '*\.hpp' -o -name '*\.hxx' -o -name '*\.hh' \) \
-        -print0 | xargs -0 grep --color -n "$@"
+    search -name '*\.c' -name '*\.cpp' -name '*\.cxx' -name '*\.cc' \
+           -name '*\.h' -name '*\.hpp' -name '*\.hxx' -name '*\.hh' \
+            "$@"
 }
 
 
@@ -268,7 +291,7 @@ resgrep() { #  runs grep on all local res/*.xml files.
 
 
 mangrep() { #  runs grep on all local AndroidManifest.xml files.
-    find . -name .git -prune -o -type f -name 'AndroidManifest.xml' -print0 | xargs -0 grep --color -n "$@"
+    search -name 'AndroidManifest.xml' "$@"
 }
 
 
