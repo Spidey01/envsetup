@@ -24,7 +24,7 @@
 #
 # For more information, please refer to <http://unlicense.org>
 
-ENVSETUP_VERSION="1.2"
+ENVSETUP_VERSION="1.3"
 
 # database like list of project files, see 'filelist'.
 # path is relative to projet root.
@@ -378,28 +378,26 @@ choosejdk() { # Export a JAVA_HOME.
 }
 
 
-check_android() { # fuzzy helper for ANDROID_HOME.
-    local findArgs buildToolsVersion compileSdkVersion
+choose_android() { # fuzzy helper for ANDROID_HOME.
+    local prefix version
+
+    if [ $# -gt 0 ]; then
+        ANDROID_HOME="$1"
+        export ANDROID_HOME
+    fi
 
     if [ -z "$ANDROID_HOME" ]; then
         echo 'ANDROID_HOME is not set!'
         return 1
     else
-        findArgs=". -name .git -prune -o -name build.gradle -print0"
-        
-        # there should be a function for greping for build.gradle files!
-
-        for buildToolsVersion in $(find $findArgs | xargs -0 grep buildToolsVersion | sed -e 's/.*buildToolsVersion "//' -e 's/"//' | sort | uniq); do
-
-            [ ! -d "$ANDROID_HOME/build-tools/$buildToolsVersion" ] && echo "Android SDK missing build-tools/$buildToolsVersion"
+        prefix="${ANDROID_HOME}/build-tools"
+        echo "Select build tools version in $prefix"
+        select version in "$(ls "$prefix")"; do
+            echo "PATH=${prefix}/${version}:\$PATH"
+            # PATH="${prefix}/${version}:$PATH"
+            return
         done
-
-        # similar for 
-        #   compileSdkVersion 10
-        #   minSdkVersion 10
-        #   targetSdkVersion 18
     fi
-
 }
 
 
@@ -423,7 +421,6 @@ _envsetup_complete_projects() { ## bash completion function for project names.
 # complete project names for these commands.
 complete -o nospace -F _envsetup_complete_projects m mma m_make m_gradle
 
-check_android
 
 if [ -f "$(gettop)/envsetup.local.sh" ]; then
     . "$(gettop)/envsetup.local.sh"
