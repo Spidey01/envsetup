@@ -31,16 +31,32 @@ ENVSETUP_VERSION="1.3"
 #
 ENVSETUP_FILELIST=tmp/filelist
 
+# Path relative to `gettop` that contains envsetup.sh and related files.
+# Default is "" or envsetup if present in PWD.
+#
+[ -z "$ENVSETUP_DIR" -a -d ./envsetup ] && ENVSETUP_DIR='envsetup'
+
 
 # in honor of Android.
 hmm() { # This help.
+    local sources
+
     echo 'usage: ". ./envsetup.sh" from your shell to add the following functions to your environment'
     echo
 
-    # Supported OS'es include the path here, so >_>.
-    # Also this skips funcs with !a-z names (e.g. for internals).
-    # It also skips undocumented.
-    cat `gettop`/envsetup.{sh,local.sh} | grep '^[a-z]*() {' | \
+    # Search these files:
+    #
+    #   - $ENVSETUP_DIR/envsetup.sh
+    #   - envsetup.project.sh
+    #   - envsetup.local.sh
+    sources="`gettop`/${ENVSETUP_DIR}/envsetup.sh"
+    [ -f "`gettop`/envsetup.project.sh" ] && sources="$sources `gettop`/envsetup.project.sh"
+    [ -f "`gettop`/envsetup.local.sh" ] && sources="$sources `gettop`/envsetup.local.sh"
+
+    #
+    # Gets out comments like 'foo() { # Help message here...'
+    # Also this skips funcs with !a-z names or ## comments (e.g. for internals).
+    cat $sources | grep '^[a-z]*() {' | \
         sed -e 's/() { # /\t/' -e 's/[a-z]*() {.*$//' -e '/^$/d' -e 's/^/\t/' #| sort
 
     echo
