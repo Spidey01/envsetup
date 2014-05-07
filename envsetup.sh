@@ -24,7 +24,7 @@
 #
 # For more information, please refer to <http://unlicense.org>
 
-ENVSETUP_VERSION="1.4"
+ENVSETUP_VERSION="1.4.1"
 
 # database like list of project files, see 'filelist'.
 # path is relative to projet root.
@@ -437,6 +437,11 @@ _envsetup_complete_projects() { ## bash completion function for project names.
 
 # complete project names for these commands.
 complete -o nospace -F _envsetup_complete_projects m mma m_make m_gradle
+
+
+if [ -f "$(gettop)/envsetup.project.sh" ]; then
+    . "$(gettop)/envsetup.project.sh"
+fi
 
 
 if [ -f "$(gettop)/envsetup.local.sh" ]; then
