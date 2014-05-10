@@ -8,10 +8,10 @@ PUSHD "%PROJECT_ROOT%"
 IF EXIST "%PROJECT_ROOT%\tmp\.m-clears-screen" CLS
 
 IF EXIST Makefile (
-	ECHO m_make %*
+	m_make %*
 ) ELSE (
 	IF EXIST build.gradle (
-		ECHO m_gradle %*
+		m_gradle %*
 	) ELSE (
 		ECHO Don't know how to build this kind of project.
 		GOTO :fixup

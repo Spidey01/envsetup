@@ -24,7 +24,7 @@ REM  OTHER DEALINGS IN THE SOFTWARE.
 REM 
 REM  For more information, please refer to <http://unlicense.org>
 
-SET "ENVSETUP_VERSION=1.4.2"
+SET "ENVSETUP_VERSION=1.4.3"
 
 SET "ENVSETUP_FILELIST=tmp\filelist"
 
