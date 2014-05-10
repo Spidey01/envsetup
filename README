@@ -16,34 +16,39 @@ It does not have to be an Android project. It can be anything.
 YOUR PROJECT
 ============
 
-Copy over the following to your project root:
+Add envsetup as a submodule of the same name to your Git. Or just download from git an extract the same way.
 
-	.cmd
-	envsetup.sh
-	envsetup.cmd
+        envsetup\
+                .cmd
+                envsetup.sh
+                envsetup.cmd
 
-Create the following files or edit the script accordingly:
 
-	COPYING
-	README
+At present the following build tools are supported:
 
-And your build system, etc. Several are kinda supported. Patches welcome.
+        make
+        gradle
 
-You may wish to include the contents of my .gitignore in this repo.
+You may wish to include these in your .gitignore or equivalent:
+
+        envsetup.local.sh
+        envsetup.local.cmd
 
 
 To get stuff going in your development shell: source the .sh in bash or run the
 .cmd in cmd.exe.
 
-	$ . ./envsetup.sh
+	$ . ./envsetup/envsetup.sh
 
-	E:\proj> envsetup.cmd
+	E:\proj> .\envsetup\envsetup.cmd
 
-Edit the created envsetup.local.{sh,cmd} files with project local stuff.
+Create envsetup.project.{sh,cmd} files with project local stuff you want to share among developers.
 
-On Windows you may place local batch files and stuff in .\.cmd and prefix the
-extnesion with .local. E.g. foo.local.cmd. This directory gets added to your
-%Path%.
+Edit the created envsetup.local.{sh,cmd} files with local stuff for your tree.
+
+
+On Windows you may place executable files and stuff in %PROJECT_ROOT%\.cmd; it
+will be injected into your %Path% along with envsetup\.cmd.
 
 On UNIX based systems, well you know how to write shell functions don't you?
 There is also the ./.cmd directory if you wish to add that to your $PATH via
