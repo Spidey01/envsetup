@@ -1,0 +1,1 @@
+@ECHO %PROJECT_ROOT%

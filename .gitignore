@@ -1,2 +1,4 @@
 envsetup.local.sh
 envsetup.local.cmd
+# vim
+*.sw?

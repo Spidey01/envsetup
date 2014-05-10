@@ -1,6 +1,11 @@
 hmm                     this help.
+gettop                  print path to top of the tree.
 croot                   cd to top of the tree.
 cpushd                  call pushd with the top of the tree.
+mpushd                  call pushd with a module name.
 m                       makes from the top of the tree.
-android-environment     setup ANDROID_HOME, etc.
+m_make                  like m but always uses make.
+m_gradle                like m but always uses gradlew.
 java-environment        setup JAVA_HOME, etc.
+android-environment     setup ANDROID_HOME, etc.
+choose_android          set ANDROID_HOME to path.

@@ -7,10 +7,16 @@ PUSHD "%PROJECT_ROOT%"
 
 IF EXIST "%PROJECT_ROOT%\tmp\.m-clears-screen" CLS
 
-IF EXIST "%PROJECT_ROOT%\tmp\.m-uses-script" (
-	@CALL "%PROJECT_ROOT%\gradlew.bat" --daemon %* 1> .\tmp\gradlew.log 2>&1
+IF EXIST Makefile (
+	ECHO m_make %*
 ) ELSE (
-	@CALL "%PROJECT_ROOT%\gradlew.bat" --daemon %* 
+	IF EXIST build.gradle (
+		ECHO m_gradle %*
+	) ELSE (
+		ECHO Don't know how to build this kind of project.
+		GOTO :fixup
+	)
 )
 
+:fixup
 POPD

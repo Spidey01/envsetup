@@ -24,26 +24,22 @@ REM  OTHER DEALINGS IN THE SOFTWARE.
 REM 
 REM  For more information, please refer to <http://unlicense.org>
 
-SET "ENVSETUP_VERSION=1.1"
+SET "ENVSETUP_VERSION=1.4.2"
 
-SET PROJECT_ROOT=%~dp0
+SET "ENVSETUP_FILELIST=tmp\filelist"
 
-CALL "%PROJECT_ROOT%\.cmd\java-environment.cmd"
-IF NOT DEFINED JAVA_HOME (
-	ECHO JAVA_HOME is not set!
-	GOTO :eof
+IF NOT DEFINED ENVSETUP_DIR (
+	IF EXIST .\envsetup SET "ENVSETUP_DIR=%~dp0"
 )
+SET "PROJECT_ROOT=%ENVSETUP_DIR%.."
+REM  SET "PROJECT_ROOT=%CD%"
 
-CALL "%PROJECT_ROOT%\.cmd\android-environment.cmd"
-IF NOT DEFINED ANDROID_HOME (
-	ECHO ANDROID_HOME is not set!
-	GOTO :eof
-)
 
-SET "XDG_DATA_HOME=%PROJECT_ROOT%\tmp\share"
-SET "XDG_CONFIG_HOME=%PROJECT_ROOT%\tmp\config"
-SET "XDG_CACHE_HOME=%PROJECT_ROOT%\tmp\cache"
-SET "PATH=%PROJECT_ROOT%\.cmd;%PATH%"
+IF NOT DEFINED XDG_DATA_HOME 	SET "XDG_DATA_HOME=%PROJECT_ROOT%\tmp\share"
+IF NOT DEFINED XDG_CONFIG_HOME 	SET "XDG_CONFIG_HOME=%PROJECT_ROOT%\tmp\config"
+IF NOT DEFINED XDG_CACHE_HOME  	SET "XDG_CACHE_HOME=%PROJECT_ROOT%\tmp\cache"
+SET "PATH=%PROJECT_ROOT%\.cmd;%ENVSETUP_DIR%\.cmd;%PATH%"
 
-IF EXIST "%PROJECT_ROOT%\envsetup.local.cmd" CALL "%PROJECT_ROOT%\envsetup.local.cmd"
+IF EXIST "%PROJECT_ROOT%\envsetup.project.cmd" 	CALL "%PROJECT_ROOT%\envsetup.project.cmd"
+IF EXIST "%PROJECT_ROOT%\envsetup.local.cmd"   	CALL "%PROJECT_ROOT%\envsetup.local.cmd"
 
