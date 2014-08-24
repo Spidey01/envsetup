@@ -6,7 +6,8 @@ IF NOT DEFINED PROJECT_ROOT (
 
 
 IF EXIST "%PROJECT_ROOT%\tmp\.m-uses-script" (
-	make %* 1> .\tmp\make.log 2>&1
+	make %* 1> "%PROJECT_ROOT%\tmp\make.log" 2>&1
+	TYPE "%PROJECT_ROOT%\tmp\make.log"
 ) ELSE (
 	make %* 
 )

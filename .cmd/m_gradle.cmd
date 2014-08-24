@@ -6,7 +6,8 @@ IF NOT DEFINED PROJECT_ROOT (
 
 
 IF EXIST "%PROJECT_ROOT%\tmp\.m-uses-script" (
-	@CALL "%PROJECT_ROOT%\gradlew.bat" --daemon %* 1> .\tmp\gradlew.log 2>&1
+	@CALL "%PROJECT_ROOT%\gradlew.bat" --daemon %* 1> "%PROJECT_ROOT%\tmp\gradlew.log" 2>&1
+	TYPE "%PROJECT_ROOT%\tmp\gradlew.log"
 ) ELSE (
 	@CALL "%PROJECT_ROOT%\gradlew.bat" --daemon %* 
 )
