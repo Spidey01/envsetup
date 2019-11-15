@@ -189,6 +189,10 @@ m_make() { # runs make based build in cwd.
     _maybe_use_script make $*
 }
 
+m_ninja() { # runs ninja based build in cwd.
+    _maybe_use_script ninja $*
+}
+
 
 m() { # Makes from the top of the tree. Selects m_tool correctly.
     cpushd > /dev/null
@@ -196,6 +200,8 @@ m() { # Makes from the top of the tree. Selects m_tool correctly.
         [ -f "$(gettop)/tmp/.m-clears-screen" ] && clear
         if [ -f Makefile ]; then
             m_make $*
+        elif [ -f build.ninja ]; then
+            m_ninja $*
         elif [ -f build.gradle ]; then
             m_gradle $*
         else

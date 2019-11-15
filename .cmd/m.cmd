@@ -10,11 +10,15 @@ IF EXIST "%PROJECT_ROOT%\tmp\.m-clears-screen" CLS
 IF EXIST Makefile (
 	CALL m_make %*
 ) ELSE (
-	IF EXIST build.gradle (
-		CALL m_gradle %*
+	IF EXIST build.ninja (
+		CALL m_ninja %*
 	) ELSE (
-		ECHO Don't know how to build this kind of project.
-		GOTO :fixup
+		IF EXIST build.gradle (
+			CALL m_gradle %*
+		) ELSE (
+			ECHO Don't know how to build this kind of project.
+			GOTO :fixup
+		)
 	)
 )
 
