@@ -342,25 +342,25 @@ filelist() { # create index of project files.
     croot
     echo -n "Creating index..."
 
-
-    dirs=""
-    for project in $(lsproj); do
-        # make sure any gradle projects are converted to paths.
-        # first -e is for the leading :!
-        p="$(echo "./$project" | sed -e 's/://' -e 's/:/\//g')"
-        # echo "p=$p"
-        dirs="$dirs $p"
-    done
-
-    # exclude what looks like a temporary or hidden directory.
-    find $dirs -not \( \
-        -type d -name \.\*  -prune -o \
-        -type d -name tmp   -prune -o \
-        -type d -name out   -prune -o \
-        -type d -name build -prune -o \
-        -type d -name obj   -prune \
-    \) -type f | sort | uniq > "./$ENVSETUP_FILELIST"
-
+    # exclude hidden, dir names, project files.
+    find . \
+            \( -type d -path '*/\.*' -prune -o ! -name '.*' \) \
+            ! \( \
+                -type d -path '*/build' -prune -o \
+                -type d -path '*/obj' -prune -o \
+                -type d -path '*/out' -prune -o \
+                -type d -path '*/tmp' -prune \
+              \) \
+            ! \( \
+                -name Makefile.\* -o -name \*.mak -o \
+                -name \*.ninja -o \
+                -name \*.gradle -o \
+                -name build.xml -o \
+                -name CMakeLists.txt -o \
+                -name premake.lua \
+              \) \
+            -type f -print \
+        | sort | uniq > "./$ENVSETUP_FILELIST"
 
     echo " Done"
     cd "$OLDPWD"
