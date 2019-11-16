@@ -57,7 +57,7 @@ hmm() { # This help.
     # Gets out comments like 'foo() { # Help message here...'
     # Also this skips funcs with !a-z names or ## comments (e.g. for internals).
     cat $sources | grep '^[a-z]*() {' | \
-        sed -e 's/() { # /\t/' -e 's/[a-z]*() {.*$//' -e '/^$/d' -e 's/^/\t/' #| sort
+        sed -e 's/() { # /\t\t/' -e 's/[a-z]*() {.*$//' -e '/^$/d' -e 's/^/\t/' #| sort
 
     echo
     echo "Read the source for further details."
@@ -129,7 +129,7 @@ mpushd() { # call pushd with a module name.
 }
 
 
-lsproj() { #
+lsproj() { # list projects.
     local here dir parent project_file targets task tasks type
     for project_file in $(find ${@:-.} -name .git -prune \
         -o -type f -name build.gradle \
@@ -196,11 +196,11 @@ m_ninja() { # runs ninja based build in cwd.
     _maybe_use_script ninja $*
 }
 
-m_cmake() {
+m_cmake() { # runs cmake based build in cwd.
     _maybe_use_script cmake $*
 }
 
-m_premake() {
+m_premake() { # runs premake based build in cwd.
     _maybe_use_script premake $*
 }
 
@@ -323,7 +323,7 @@ cgrep() { # runs grep on all local C/C++ source files.
 }
 
 
-resgrep() { #  runs grep on all local res/*.xml files.
+resgrep() { # runs grep on all local res/*.xml files.
     local dir
     for dir in `find . -name .git -prune -o -name res -type d`; do
         find $dir -type f -name '*\.xml' -print0 | xargs -0 grep --color -n "$@"
@@ -331,7 +331,7 @@ resgrep() { #  runs grep on all local res/*.xml files.
 }
 
 
-mangrep() { #  runs grep on all local AndroidManifest.xml files.
+mangrep() { # runs grep on all local AndroidManifest.xml files.
     search -name 'AndroidManifest.xml' "$@"
 }
 
