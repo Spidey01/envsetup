@@ -302,6 +302,10 @@ search() { # search [-name find_pattern]... [grep args].
             ;;
         esac
     done
+
+    # no -name = any file.
+    [ -z "$fargs" ] && fargs="-name \*"
+
     eval "find . -name .git -prune -o -type f \( ${fargs} \) -print0" \
         | eval "xargs -0 grep --color -n $gargs"
 }
