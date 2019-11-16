@@ -6,6 +6,9 @@ mpushd                  call pushd with a module name.
 m                       makes from the top of the tree.
 m_make                  like m but always uses make.
 m_gradle                like m but always uses gradlew.
+m_ninja                 like m but always uses ninja.
+m_cmake                 like m but always uses cmake.
+m_premake                 like m but always uses premake.
 java-environment        setup JAVA_HOME, etc.
 android-environment     setup ANDROID_HOME, etc.
 choose_android          set ANDROID_HOME to path.
