@@ -16,8 +16,16 @@ IF EXIST Makefile (
 		IF EXIST build.gradle (
 			CALL m_gradle %*
 		) ELSE (
-			ECHO Don't know how to build this kind of project.
-			GOTO :fixup
+			IF EXIST CMakeLists.txt (
+				m_cmake %*
+			) ELSE (
+				IF EXIST premake.lua (
+					m_premake %*
+				) ELSE (
+					ECHO Don't know how to build this kind of project.
+					GOTO :fixup
+				)
+			)
 		)
 	)
 )

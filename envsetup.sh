@@ -193,6 +193,13 @@ m_ninja() { # runs ninja based build in cwd.
     _maybe_use_script ninja $*
 }
 
+m_cmake() {
+    _maybe_use_script cmake $*
+}
+
+m_premake() {
+    _maybe_use_script premake $*
+}
 
 m() { # Makes from the top of the tree. Selects m_tool correctly.
     cpushd > /dev/null
@@ -204,6 +211,10 @@ m() { # Makes from the top of the tree. Selects m_tool correctly.
             m_ninja $*
         elif [ -f build.gradle ]; then
             m_gradle $*
+        elif [ -f CMakeLists.txt ]; then
+            m_cmake $*
+        elif [ -f premake.lua ]; then
+            m_premake $*
         else
             echo "Don't know how to build this kind of project."
         fi
