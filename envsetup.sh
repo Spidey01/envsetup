@@ -90,6 +90,7 @@ guess_is_project() {
     [ -f "Makefile" -o \
       -f "build.gradle" -o \
       -f "build.xml" -o \
+      -f "build.ninja" -o \
       -f "CMakeLists" -o \
       -f "premake.lua" \
     ]
@@ -134,6 +135,8 @@ lsproj() { #
         -o -type f -name build.gradle \
         -o -type f -name Makefile \
         -o -type f -name Makefile.am \
+        -o -type f -name build.ninja \
+        -o -type f -name CMakeLists.txt \
         )
     do
         dir="$(dirname "$project_file")"
@@ -158,7 +161,7 @@ lsproj() { #
                 # skip if not in settings.gradle file.
                 grep include "$(gettop)/settings.gradle" | grep -q "$parent:$here" && echo "$parent:$here"
                 ;;
-            Makefile|Makefile.*)
+            Makefile|Makefile.*|build.ninja)
                 # assume it works this way.
                 echo "$dir" | sed -e 's/^\.\///'
                 ;;
@@ -453,7 +456,7 @@ _envsetup_complete_projects() { ## bash completion function for project names.
 
 
 # complete project names for these commands.
-complete -o nospace -F _envsetup_complete_projects m mma m_make m_gradle
+complete -o nospace -F _envsetup_complete_projects m mma m_make m_gradle m_ninja m_cmake m_premake
 
 
 if [ -f "$(gettop)/envsetup.project.sh" ]; then
