@@ -42,9 +42,9 @@ To get stuff going in your development shell: source the .sh in bash or run the
 
 	E:\proj> .\envsetup\envsetup.cmd
 
-Create envsetup.project.{sh,cmd} files with project local stuff you want to share among developers.
+Create envsetup.project.{sh,cmd} files with project local stuff you want to share among developers. Check those in.
 
-Edit the created envsetup.local.{sh,cmd} files with local stuff for your tree.
+Edit the created envsetup.local.{sh,cmd} files with local stuff for your tree. Use that for your specific machine.
 
 
 On Windows you may place executable files and stuff in %PROJECT_ROOT%\.cmd; it
