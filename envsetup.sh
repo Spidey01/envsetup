@@ -118,9 +118,21 @@ croot() { # cd to top of the tree.
     cd "`gettop`"
 }
 
+broot() { # cd to top of the build tree.
+    if [ -z "$PROJECT_BUILDDIR" ]; then
+        echo "PROJECT_BUILDDIR not defined, please setup your environment"
+    fi
+    cd "$PROJECT_BUILDDIR"
+}
+
 
 cpushd() { # call pushd with the top of the tree.
     pushd "`gettop`"
+}
+
+
+bpushd() { # call pushd with the top of the build tree.
+    pushd "$PROJECT_BUILDDIR"
 }
 
 

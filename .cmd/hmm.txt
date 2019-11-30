@@ -1,7 +1,9 @@
 hmm                     this help.
 gettop                  print path to top of the tree.
 croot                   cd to top of the tree.
+broot                   cd to top of the build tree.
 cpushd                  call pushd with the top of the tree.
+bpushd                  call pushd with the top of the build tree.
 mpushd                  call pushd with a module name.
 m                       makes from the top of the tree.
 m_make                  like m but always uses make.
