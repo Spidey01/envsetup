@@ -3,7 +3,12 @@ IF NOT DEFINED PROJECT_ROOT (
 	ECHO "PROJECT_ROOT not defined, please setup your environment"
 	GOTO :eof
 )
-PUSHD "%PROJECT_ROOT%"
+REM If using cmake, may need to use a different dir than root.
+IF DEFINED PROJECT_BUILDDIR (
+	IF EXIST %PROJECT_BUILDDIR% ( PUSHD %PROJECT_BUILDDIR% )
+) ELSE (
+	PUSHD "%PROJECT_ROOT%"
+)
 
 IF EXIST "%PROJECT_ROOT%\tmp\.m-clears-screen" CLS
 
@@ -32,3 +37,4 @@ IF EXIST Makefile (
 
 :fixup
 POPD
+

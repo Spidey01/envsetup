@@ -205,7 +205,14 @@ m_premake() { # runs premake based build in cwd.
 }
 
 m() { # Makes from the top of the tree. Selects m_tool correctly.
-    cpushd > /dev/null
+
+    # If using cmake, may need to use a different dir than root.
+    if [ -n "$PROJECT_BUILDDIR" -a -d "$PROJECT_BUILDDIR" ]; then
+        pushd "$PROJECT_BUILDDIR"
+    else
+        cpushd > /dev/null
+    fi
+
     if guess_is_project; then
         [ -f "$(gettop)/tmp/.m-clears-screen" ] && clear
         if [ -f Makefile ]; then
@@ -478,6 +485,15 @@ else
 #
 
 PROJECT_NAME="$(basename $(pwd))"
+
+# Set this if you want to override where 
+# E.g.:
+#    PROJECT_BUILDDIR=build
+#    m -S . -B build -G "CMake Generator" -> run cmake at root
+#    m -> now run cmake from build
+#
+
+# PROJECT_BUILDDIR=
 
 EOF
 fi
