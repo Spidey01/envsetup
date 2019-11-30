@@ -24,7 +24,7 @@
 #
 # For more information, please refer to <http://unlicense.org>
 
-ENVSETUP_VERSION="1.5.0"
+ENVSETUP_VERSION="1.5.1"
 
 # database like list of project files, see 'filelist'.
 # path is relative to projet root.
