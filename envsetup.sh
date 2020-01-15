@@ -219,7 +219,7 @@ m_premake() { # runs premake based build in cwd.
 m() { # Makes from the top of the tree. Selects m_tool correctly.
 
     # If using cmake, may need to use a different dir than root.
-    if [ -n "$PROJECT_BUILDDIR" -a -d "$PROJECT_BUILDDIR" ]; then
+    if [ -n "$PROJECT_BUILDDIR" -a -d "$PROJECT_BUILDDIR" -a -f CMakeLists.txt ]; then
         pushd "$PROJECT_BUILDDIR"
     else
         cpushd > /dev/null
